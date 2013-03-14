@@ -50,8 +50,8 @@ autocmd BufEnter *
       \ endif
 
 function! s:highlight_block() abort
-  if exists('s:match')
-    call matchdelete(s:match)
+  if exists('w:match')
+    call matchdelete(w:match)
   endif
 
   let char_open  = s:pairs[&ft][0]
@@ -65,11 +65,11 @@ function! s:highlight_block() abort
   endif
 
   if exists('pos_open') && exists('pos_close')
-    let s:match = matchadd(s:group, '\%(\%'. pos_open[0] .'l\%'. pos_open[1] .'c\)\|\(\%'. pos_close[0] .'l\%'. pos_close[1] .'c\)', s:prio, s:id)
+    let w:match = matchadd(s:group, '\%(\%'. pos_open[0] .'l\%'. pos_open[1] .'c\)\|\(\%'. pos_close[0] .'l\%'. pos_close[1] .'c\)', s:prio, s:id)
   elseif exists('pos_open')
-    let s:match = matchadd(s:group, '\%(\%'. pos_open[0] .'l\%'. pos_open[1] .'c\)', s:prio, s:id)
+    let w:match = matchadd(s:group, '\%(\%'. pos_open[0] .'l\%'. pos_open[1] .'c\)', s:prio, s:id)
   else
-    let s:match = matchadd(s:group, '\%(\%'. pos_close[0] .'l\%'. pos_close[1] .'c\)', s:prio, s:id)
+    let w:match = matchadd(s:group, '\%(\%'. pos_close[0] .'l\%'. pos_close[1] .'c\)', s:prio, s:id)
   endif
 endfunction
 
