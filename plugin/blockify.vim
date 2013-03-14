@@ -44,7 +44,9 @@ autocmd BufEnter *
       \ endif
 
 function! s:highlight_block() abort
-  call clearmatches()
+  if exists('s:match')
+    call matchdelete(s:match)
+  endif
 
   let char_open  = g:blockify_pairs[&ft][0]
   let char_close = g:blockify_pairs[&ft][1]
@@ -57,11 +59,11 @@ function! s:highlight_block() abort
   endif
 
   if exists('pos_open') && exists('pos_close')
-    call matchadd(s:group, '\%(\%'. pos_open[0] .'l\%'. pos_open[1] .'c\)\|\(\%'. pos_close[0] .'l\%'. pos_close[1] .'c\)')
+    let s:match = matchadd(s:group, '\%(\%'. pos_open[0] .'l\%'. pos_open[1] .'c\)\|\(\%'. pos_close[0] .'l\%'. pos_close[1] .'c\)', 42, 666)
   elseif exists('pos_open')
-    call matchadd(s:group, '\%(\%'. pos_open[0] .'l\%'. pos_open[1] .'c\)')
+    let s:match = matchadd(s:group, '\%(\%'. pos_open[0] .'l\%'. pos_open[1] .'c\)', 42, 666)
   else
-    call matchadd(s:group, '\%(\%'. pos_close[0] .'l\%'. pos_close[1] .'c\)')
+    let s:match = matchadd(s:group, '\%(\%'. pos_close[0] .'l\%'. pos_close[1] .'c\)', 42, 666)
   endif
 endfunction
 
