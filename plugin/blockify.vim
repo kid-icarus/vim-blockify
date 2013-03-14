@@ -31,6 +31,8 @@ endif
 let g:loaded_blockify = 1
 
 let s:group = exists('g:blockify_highlight_group') ? g:blockify_highlight_group : 'MatchParen'
+let s:prio  = exists('g:blockify_match_priority')  ? g:blockify_match_priority  : 42
+let s:id    = exists('g:blockify_match_id')        ? g:blockify_match_id        : 666
 
 let g:blockify_pairs = {
       \ 'c':    [ '{', '}' ],
@@ -59,11 +61,11 @@ function! s:highlight_block() abort
   endif
 
   if exists('pos_open') && exists('pos_close')
-    let s:match = matchadd(s:group, '\%(\%'. pos_open[0] .'l\%'. pos_open[1] .'c\)\|\(\%'. pos_close[0] .'l\%'. pos_close[1] .'c\)', 42, 666)
+    let s:match = matchadd(s:group, '\%(\%'. pos_open[0] .'l\%'. pos_open[1] .'c\)\|\(\%'. pos_close[0] .'l\%'. pos_close[1] .'c\)', s:prio, s:id)
   elseif exists('pos_open')
-    let s:match = matchadd(s:group, '\%(\%'. pos_open[0] .'l\%'. pos_open[1] .'c\)', 42, 666)
+    let s:match = matchadd(s:group, '\%(\%'. pos_open[0] .'l\%'. pos_open[1] .'c\)', s:prio, s:id)
   else
-    let s:match = matchadd(s:group, '\%(\%'. pos_close[0] .'l\%'. pos_close[1] .'c\)', 42, 666)
+    let s:match = matchadd(s:group, '\%(\%'. pos_close[0] .'l\%'. pos_close[1] .'c\)', s:prio, s:id)
   endif
 endfunction
 
