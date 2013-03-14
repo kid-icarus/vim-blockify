@@ -34,14 +34,18 @@ let s:group = exists('g:blockify_highlight_group') ? g:blockify_highlight_group 
 let s:prio  = exists('g:blockify_match_priority')  ? g:blockify_match_priority  : 42
 let s:id    = exists('g:blockify_match_id')        ? g:blockify_match_id        : 666
 
-let g:blockify_pairs = {
+let s:pairs = {
       \ 'c':    [ '{', '}' ],
       \ 'cpp':  [ '{', '}' ],
       \ 'java': [ '{', '}' ],
       \}
 
+if exists('g:blockify_pairs')
+  call extend(s:pairs, g:blockify_pairs)
+endif
+
 autocmd BufEnter *
-      \ if has_key(g:blockify_pairs, &ft) |
+      \ if has_key(s:pairs, &ft) |
       \   exe 'autocmd CursorMoved,CursorMovedI <buffer> call s:highlight_block()' |
       \ endif
 
@@ -50,8 +54,8 @@ function! s:highlight_block() abort
     call matchdelete(s:match)
   endif
 
-  let char_open  = g:blockify_pairs[&ft][0]
-  let char_close = g:blockify_pairs[&ft][1]
+  let char_open  = s:pairs[&ft][0]
+  let char_close = s:pairs[&ft][1]
 
   if matchstr(getline('.'), '.', col('.')-1) != char_open
     let pos_open = searchpairpos(char_open, '', char_close, 'Wnb')
