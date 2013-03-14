@@ -57,11 +57,11 @@ function! s:highlight_block() abort
   endif
 
   if exists('pos_open') && exists('pos_close')
-    exe 'call matchadd("'. s:group .'", "\\(\\%'. pos_open[0] .'l\\%'. pos_open[1] .'c\\)\\|\\(\\%'. pos_close[0] .'l\\%'. pos_close[1] .'c\\)")'
+    call matchadd(s:group, '\%(\%'. pos_open[0] .'l\%'. pos_open[1] .'c\)\|\(\%'. pos_close[0] .'l\%'. pos_close[1] .'c\)')
   elseif exists('pos_open')
-    exe 'call matchadd("'. s:group .'", "\\(\\%'. pos_open[0] .'l\\%'. pos_open[1] .'c\\)")'
+    call matchadd(s:group, '\%(\%'. pos_open[0] .'l\%'. pos_open[1] .'c\)')
   else
-    exe 'call matchadd("'. s:group .'", "\\(\\%'. pos_close[0] .'l\\%'. pos_close[1] .'c\\)")'
+    call matchadd(s:group, '\%(\%'. pos_close[0] .'l\%'. pos_close[1] .'c\)')
   endif
 endfunction
 
