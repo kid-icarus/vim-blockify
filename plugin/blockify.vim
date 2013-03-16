@@ -44,10 +44,16 @@ if exists('g:blockify_pairs')
   call extend(s:pairs, g:blockify_pairs)
 endif
 
-autocmd BufEnter *
-      \ if has_key(s:pairs, &ft) |
-      \   exe 'autocmd CursorMoved,CursorMovedI <buffer> call s:highlight_block()' |
-      \ endif
+autocmd BufEnter * call s:set_at_enter_buf()
+
+function! s:set_at_enter_buf() abort
+  if has_key(s:pairs, &ft)
+    augroup blockify
+      autocmd!
+      exe 'autocmd CursorMoved,CursorMovedI <buffer> call s:highlight_block()'
+    augroup END
+  endif
+endfunction
 
 function! s:highlight_block() abort
   if exists('w:match')
