@@ -56,7 +56,13 @@ function! s:set_at_enter_buf() abort
 endfunction
 
 function! s:highlight_block() abort
-  if exists('w:match')
+  if !has_key(s:pairs, &ft) && exists('w:match')
+    call matchdelete(w:match)
+    unlet w:match
+    return
+  elseif !has_key(s:pairs, &ft)
+    return
+  elseif exists('w:match')
     call matchdelete(w:match)
   endif
 
