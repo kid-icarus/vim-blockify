@@ -57,13 +57,21 @@ endfunction
 
 function! s:highlight_block() abort
   if !has_key(s:pairs, &ft) && exists('w:match')
-    call matchdelete(w:match)
+    try
+      call matchdelete(w:match)
+    catch /E803:/
+      "Do nothing
+    endtry
     unlet w:match
     return
   elseif !has_key(s:pairs, &ft)
     return
   elseif exists('w:match')
-    call matchdelete(w:match)
+    try
+      call matchdelete(w:match)
+    catch /E803:/
+      "Do nothing
+    endtry
   endif
 
   let char_open  = s:pairs[&ft][0]
